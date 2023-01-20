@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import { useState } from "react";
 import Context from "./components/Context";
 import Home from "./components/Home"
+import Entrada from "./components/Entrada";
+import Saida from "./components/Saida";
 
 function App() {
   const [token,setToken] = useState("")
@@ -19,7 +21,8 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/home" element={<Home />} />
-
+      <Route path="/nova-entrada" element={<Entrada />} />
+      <Route path="/nova-saida" element={<Saida />} />    
     </Routes>
     </BrowserRouter>
     </Context.Provider>
