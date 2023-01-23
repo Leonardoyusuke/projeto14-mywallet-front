@@ -2,31 +2,49 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
-import axios from "axios";
 import Context from "./Context";
+import axios from "axios";
 
-export default function Login(){
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const {token,setToken} = useContext(Context)
+export default function Login({username,setUsername}){
+    const [login, setLogin] = useState({
+        email:"",
+        password:""
+    })
+    const {credencial,setCredencial} = useContext(Context)
     const navigate = useNavigate()
+    const { config, setConfig } = useContext(Context);
 
-    function login(event) {
-        event.preventDefault();
-        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",{email:email, password:password})
-        request.then((response) =>{
-            setToken(response.data.token);
-            console.log(response.data.token);
+
+    function logar(e){
+        setLogin({
+            ...login,
+            [e.target.name]:e.target.value
+        })
+    }
+
+    function login1(e) {
+        e.preventDefault()
+        const request = axios.post("http://localhost:5001/login",login)
+        request.then((element) => {
+            const response = element.data
+            console.log("entrou2")
+            //localStorage.setItem("UserAuth", `${response.token}`);
+            setUsername({...username, name:response.name});
+            console.log(username);
             navigate("/home")})
+        request.catch((response)=>{
+            console.log(response)
+            alert(`Erro ${response}`);
+        });    
     }
 
 
     return(
             <Content>
             <Text>My Wallet</Text>
-            <Form1 onSubmit={login}>
-                <Input1 placeholder="   E-mail" type="email" onChange={e => setEmail(e.target.value)} required />
-                <Input1 placeholder="   Senha" type="password" onChange={e => setPassword(e.target.value)} required />
+            <Form1 onSubmit={login1}>
+                <Input1 placeholder="   E-mail" type="email" name="email" onChange={logar} required />
+                <Input1 placeholder="   Senha" type="password" name="password" onChange={logar} required />
                 <Button1  type="submit"  >Entrar  </Button1>
             </Form1>
             <Link to="/cadastro">

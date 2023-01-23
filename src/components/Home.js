@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-export default function Home(){
+export default function Home({username}){
+    const navigate = useNavigate();
+    const { config, setConfig } = useContext(UserContext);
+
+
     return(<>
         <Saudacao>
-            Olá fulano  
+            Olá {username.name}  
         </Saudacao>
         <Registros>
+            
         </Registros>
         <InOut>
         <Link to="/nova-entrada">
