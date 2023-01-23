@@ -11,11 +11,14 @@ import Saida from "./components/Saida";
 function App() {
   const [config,setConfig] = useState("")
   const [username, setUsername] = useState({name:""})
+  const [id,setId] = useState("")
+  const [reload,setReload] = useState(false)
+
 
   return (
   <>
     <BrowserRouter>
-    <Context.Provider value={{config, setConfig}}>
+    <Context.Provider value={{config, setConfig, id, setId,reload, setReload}}>
     <GlobalStyle/>
     <Routes>
       <Route path="/" element={<Login username={username} setUsername={setUsername} />} />

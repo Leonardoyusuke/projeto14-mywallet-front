@@ -10,7 +10,7 @@ export default function Login({username,setUsername}){
         email:"",
         password:""
     })
-    const {credencial,setCredencial} = useContext(Context)
+    const {id,setId} = useContext(Context)
     const navigate = useNavigate()
     const { config, setConfig } = useContext(Context);
 
@@ -27,10 +27,13 @@ export default function Login({username,setUsername}){
         const request = axios.post("http://localhost:5001/login",login)
         request.then((element) => {
             const response = element.data
+            setId(response.id)
+            console.log(id)
             console.log("entrou2")
+            setConfig({headers:{...config, Authorization: `Bearer ${response.token}`}});
             //localStorage.setItem("UserAuth", `${response.token}`);
             setUsername({...username, name:response.name});
-            console.log(username);
+            console.log(response);
             navigate("/home")})
         request.catch((response)=>{
             console.log(response)

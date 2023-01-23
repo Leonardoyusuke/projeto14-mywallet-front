@@ -1,27 +1,45 @@
 import { useState } from "react"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-
+import axios from "axios"
+import { useContext } from "react"
+import Context from "./Context"
 
 export default function Entrada(){
     const navigate = useNavigate()
-    const [valor,setValor] = useState("")
-    const [descricao, setDescricao] = useState("")
+    const {id,setId} = useContext(Context)
 
-    function entrada(){
-        console.log("entrada")
-        navigate("/Home")
+    const [entrada,setEntrada] = useState({
+        valor:"",
+        descricao:"",
+        id:id
+    })
 
-
+    function enviarEntrada(e){
+        e.preventDefault()
+        const request = axios.post("http://localhost:5001/transacoes",entrada)
+        request.then((element) => {
+        const response = element.data
+            console.log(response)
+        navigate("/home")
+    })
+        request.catch((error) =>{
+            console.log(error)
+        })
+    }
+    function entrar(e){
+        setEntrada({
+            ...entrada,[e.target.name]:e.target.value
+        })
     }
 
 
     return(
         <>
         <p>Nova Entrada</p>
-        <form onSubmit={entrada}>
-            <Input1 placeholder="   Valor" type="number" onChange={e => setValor(e.target.value)} required />
-            <Input1 placeholder="   Descrição" type="text" onChange={e => setDescricao(e.target.value)} required />
+        <form onSubmit={enviarEntrada}>
+            <Input1 placeholder="   Valor" type="number" name="valor" onChange={entrar} required />
+            <Input1 placeholder="   Descrição" type="text" name="descricao" onChange={entrar} required />
             <Button1 type="submit" > Salvar entrada </Button1>
         </form>
         </>

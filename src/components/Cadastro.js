@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import Context from "./Context";
 
 export default function Cadastro(){
     let navigate = useNavigate();
+    const { id, setId } = useContext(Context);
 
     const [registro, setRegistro] = useState({
         name:"",

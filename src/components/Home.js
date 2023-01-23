@@ -2,10 +2,31 @@ import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import { useContext } from "react";
+import Context from "./Context";
+import { useEffect } from "react";
+import axios from "axios";
 export default function Home({username}){
     const navigate = useNavigate();
-    const { config, setConfig } = useContext(UserContext);
+    const { config, setConfig,reload,setReload,id } = useContext(Context);
+    const [transacoes,setTransacoes] = useState("")
+    
+    useEffect(()=>{
+        const request = axios.get("http://localhost:5001/transacoes",{id:id})
+        request.then((response) => {
+        setTransacoes(response.data)
+        console.log(id)
+        console.log(transacoes)
+        })
+        request.catch((error)=>{
+            console.log(error)
+        } )
+    },[reload])
+    
+    setTimeout(() => {
+        setReload(!reload)
+
+    }, 5000);
 
 
     return(<>
@@ -13,7 +34,7 @@ export default function Home({username}){
             Olá {username.name}  
         </Saudacao>
         <Registros>
-            
+           {transacoes.length>0?transacoes.map((t) => <>{t.descricao} {t.valor}</>  ) :"Não há registros de entrada ou saída"}
         </Registros>
         <InOut>
         <Link to="/nova-entrada">
